@@ -1,0 +1,45 @@
+#root {
+  width: 100vw;
+  height: 100vh;
+  margin: 0;
+  padding: 0;
+  overflow: hidden;
+}
+
+.app-container {
+  width: 100vw;
+  height: 100vh;
+  position: relative;
+}
+
+.ui-overlay {
+  position: absolute;
+  top: 20px;
+  right: 20px;
+  background: rgba(0, 0, 0, 0.7);
+  color: white;
+  padding: 20px;
+  border-radius: 10px;
+  font-family: 'Arial', sans-serif;
+  z-index: 1000;
+  backdrop-filter: blur(10px);
+}
+
+.instructions h2 {
+  margin: 0 0 10px 0;
+  font-size: 18px;
+  color: #4a90e2;
+}
+
+.instructions p {
+  margin: 5px 0;
+  font-size: 14px;
+  color: #cccccc;
+}
+
+/* Remove old portfolio styles */
+.portfolio-container,
+.videos-grid,
+.video-item {
+  display: none;
+}
