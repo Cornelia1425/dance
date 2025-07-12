@@ -1,187 +1,249 @@
 import { Canvas } from '@react-three/fiber'
-import { OrbitControls, Text, Html } from '@react-three/drei'
-import { Suspense } from 'react'
+import { OrbitControls, Text } from '@react-three/drei'
+import { Suspense, useState, Component } from 'react'
+import WalletConnect from './components/WalletConnect'
+import AvatarCreator from './components/AvatarCreator'
+import Avatar from './components/Avatar'
+import StarField from './components/StarField'
+import DanceGalaxy from './components/DanceGalaxy'
 import './App.css'
 
-function VideoScreen({ position, videoId, title }) {
-  return (
-    <group position={position}>
-      {/* Front side */}
-      <mesh>
-        <boxGeometry args={[6, 4, 0.1]} />
-        <meshStandardMaterial color="#000" />
-      </mesh>
-      <Html
-        position={[0, 0, 0.06]}
-        transform
-        occlude
-        distanceFactor={1.5}
-        zIndexRange={[0, 10]}
-      >
-        <div style={{ width: '600px', height: '400px', background: '#000', padding: '0', margin: '0' }}>
-          <iframe
-            width="100%"
-            height="100%"
-            src={`https://www.youtube.com/embed/${videoId}`}
-            title={title}
-            frameBorder="0"
-            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-            allowFullScreen
-            style={{ border: 'none', margin: '0', padding: '0' }}
-          />
-        </div>
-      </Html>
-      
-      {/* Back side */}
-      <mesh rotation={[0, Math.PI, 0]}>
-        <boxGeometry args={[6, 4, 0.1]} />
-        <meshStandardMaterial color="#000" />
-      </mesh>
-      <Html
-        position={[0, 0, -0.06]}
-        rotation={[0, Math.PI, 0]}
-        transform
-        occlude
-        distanceFactor={1.5}
-        zIndexRange={[0, 10]}
-      >
-        <div style={{ width: '600px', height: '400px', background: '#000', padding: '0', margin: '0' }}>
-          <iframe
-            width="100%"
-            height="100%"
-            src={`https://www.youtube.com/embed/${videoId}`}
-            title={title}
-            frameBorder="0"
-            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-            allowFullScreen
-            style={{ border: 'none', margin: '0', padding: '0' }}
-          />
-        </div>
-      </Html>
-      
-      <Text
-        position={[0, -2.5, 0.1]}
-        fontSize={0.3}
-        color="white"
-        anchorX="center"
-        anchorY="middle"
-      >
-        {title}
-      </Text>
-    </group>
-  )
-}
+// Error Boundary for Canvas
+class CanvasErrorBoundary extends Component {
+  constructor(props) {
+    super(props);
+    this.state = { hasError: false, error: null };
+  }
 
-function ExhibitionCenter() {
-  return (
-    <>
-      {/* Ambient lighting */}
-      <ambientLight intensity={0.4} />
-      <pointLight position={[10, 10, 10]} intensity={1} />
-      <pointLight position={[-10, -10, -10]} intensity={0.5} />
-      
-      {/* Floor */}
-      <mesh rotation={[-Math.PI / 2, 0, 0]} position={[0, -5, 0]}>
-        <planeGeometry args={[50, 50]} />
-        <meshStandardMaterial color="#1a1a2e" />
-      </mesh>
-      
-      {/* Ceiling */}
-      <mesh rotation={[Math.PI / 2, 0, 0]} position={[0, 5, 0]}>
-        <planeGeometry args={[50, 50]} />
-        <meshStandardMaterial color="#16213e" />
-      </mesh>
-      
-      {/* Walls */}
-      <mesh position={[0, 0, -10]}>
-        <planeGeometry args={[50, 20]} />
-        <meshStandardMaterial color="#0f3460" />
-      </mesh>
-      <mesh position={[0, 0, 10]}>
-        <planeGeometry args={[50, 20]} />
-        <meshStandardMaterial color="#0f3460" />
-      </mesh>
-      <mesh position={[-10, 0, 0]} rotation={[0, Math.PI / 2, 0]}>
-        <planeGeometry args={[20, 20]} />
-        <meshStandardMaterial color="#0f3460" />
-      </mesh>
-      <mesh position={[10, 0, 0]} rotation={[0, -Math.PI / 2, 0]}>
-        <planeGeometry args={[20, 20]} />
-        <meshStandardMaterial color="#0f3460" />
-      </mesh>
-      
-      {/* Double-sided video screen in center */}
-      <VideoScreen 
-        position={[0, 0, 0]} 
-        videoId="rfBCmE7K4lc" 
-        title="Dance Performance" 
-      />
-      
-      {/* Floating particles */}
-      {Array.from({ length: 150 }).map((_, i) => (
-        <mesh
-          key={i}
-          position={[
-            (Math.random() - 0.5) * 20,
-            (Math.random() - 0.5) * 10,
-            (Math.random() - 0.5) * 20
-          ]}
-        >
-          <sphereGeometry args={[0.02, 8, 8]} />
-          <meshStandardMaterial color="#4a90e2" emissive="#4a90e2" emissiveIntensity={0.5} />
-        </mesh>
-      ))}
-      
-      {/* Welcome text */}
-      <Text
-        position={[0, 3, -8]}
-        fontSize={1}
-        color="white"
-        anchorX="center"
-        anchorY="middle"
-      >
-        The Dance Theatre
-      </Text>
-      
-      <Text
-        position={[0, 2, -8]}
-        fontSize={0.4}
-        color="#cccccc"
-        anchorX="center"
-        anchorY="middle"
-        maxWidth={10}
-      >
-        Welcome to the Exhibition Center
-      </Text>
-    </>
-  )
+  static getDerivedStateFromError(error) {
+    return { hasError: true, error };
+  }
+
+  componentDidCatch(error, errorInfo) {
+    console.error('Canvas Error:', error, errorInfo);
+  }
+
+  render() {
+    if (this.state.hasError) {
+      return (
+        <div style={{
+          position: 'absolute',
+          top: '50%',
+          left: '50%',
+          transform: 'translate(-50%, -50%)',
+          background: 'rgba(0, 0, 0, 0.8)',
+          color: '#B8A99A',
+          padding: '20px',
+          borderRadius: '10px',
+          textAlign: 'center'
+        }}>
+          <h3 style={{ color: '#8B7355' }}>Something went wrong with the 3D view</h3>
+          <p>Please refresh the page to try again.</p>
+          <button 
+            onClick={() => window.location.reload()}
+            style={{
+              background: '#8B7355',
+              color: '#B8A99A',
+              border: 'none',
+              padding: '10px 20px',
+              borderRadius: '5px',
+              cursor: 'pointer',
+              marginTop: '10px'
+            }}
+          >
+            Refresh Page
+          </button>
+        </div>
+      );
+    }
+
+    return this.props.children;
+  }
 }
 
 function App() {
+  const [walletConnected, setWalletConnected] = useState(false);
+  const [walletAccount, setWalletAccount] = useState(null);
+  const [showAvatarCreator, setShowAvatarCreator] = useState(false);
+  const [avatars, setAvatars] = useState([]);
+  const [currentView, setCurrentView] = useState('universe'); // 'universe' or 'galaxy'
+  const [selectedGalaxy, setSelectedGalaxy] = useState(null);
+  const [cameraPosition, setCameraPosition] = useState([0, 0, 20]);
+
+  const handleWalletConnect = (account, provider) => {
+    setWalletConnected(true);
+    setWalletAccount(account);
+    // Don't automatically show avatar creator, let user choose
+  };
+
+  const handleWalletDisconnect = () => {
+    setWalletConnected(false);
+    setWalletAccount(null);
+    setShowAvatarCreator(false);
+  };
+
+  const handleAvatarCreate = (avatar) => {
+    // Generate random position near the current camera position
+    const randomPosition = [
+      cameraPosition[0] + (Math.random() - 0.5) * 10,
+      cameraPosition[1] + (Math.random() - 0.5) * 5,
+      cameraPosition[2] + (Math.random() - 0.5) * 10
+    ];
+    
+    setAvatars(prevAvatars => [...prevAvatars, {
+      ...avatar,
+      id: Date.now(),
+      position: randomPosition
+    }]);
+    setShowAvatarCreator(false);
+  };
+
+  const handleGalaxyClick = (galaxy) => {
+    setSelectedGalaxy(galaxy);
+    setCurrentView('galaxy');
+    
+    // Move avatars to the galaxy position
+    const updatedAvatars = avatars.map(avatar => ({
+      ...avatar,
+      position: [
+        galaxy.position[0] + (Math.random() - 0.5) * 4,
+        galaxy.position[1] + (Math.random() - 0.5) * 2,
+        galaxy.position[2] + (Math.random() - 0.5) * 4
+      ]
+    }));
+    setAvatars(updatedAvatars);
+  };
+
+  const handleBackToUniverse = () => {
+    setCurrentView('universe');
+    setSelectedGalaxy(null);
+    setCameraPosition([0, 0, 20]);
+    
+    // Move avatars back to universe positions
+    const updatedAvatars = avatars.map(avatar => ({
+      ...avatar,
+      position: [
+        (Math.random() - 0.5) * 20,
+        (Math.random() - 0.5) * 10,
+        (Math.random() - 0.5) * 20 - 10
+      ]
+    }));
+    setAvatars(updatedAvatars);
+  };
+
   return (
     <div className="app-container">
-      <Canvas
-        camera={{ position: [0, 2, 8], fov: 75 }}
-        style={{ background: 'linear-gradient(to bottom, #0f0f23, #1a1a2e)' }}
-      >
-        <Suspense fallback={null}>
-          <ExhibitionCenter />
-          <OrbitControls 
-            enablePan={true}
-            enableZoom={true}
-            enableRotate={true}
-            maxPolarAngle={Math.PI / 2}
-            minDistance={3}
-            maxDistance={20}
-          />
-        </Suspense>
-      </Canvas>
+      <CanvasErrorBoundary>
+        <Canvas
+          camera={{ position: cameraPosition, fov: 75 }}
+          style={{ background: '#000000' }}
+        >
+          <Suspense fallback={null}>
+            {currentView === 'universe' ? (
+              <>
+                <StarField 
+                  onGalaxyClick={handleGalaxyClick}
+                  cameraPosition={cameraPosition}
+                  setCameraPosition={setCameraPosition}
+                  currentView={currentView}
+                />
+                
+                {/* Display avatars in universe */}
+                {avatars.map((avatar) => (
+                  <Avatar key={avatar.id} avatar={avatar} />
+                ))}
+              </>
+            ) : (
+              <>
+                <DanceGalaxy 
+                  galaxy={selectedGalaxy}
+                  onBack={handleBackToUniverse}
+                />
+                
+                {/* Display avatars in galaxy */}
+                {avatars.map((avatar) => (
+                  <Avatar key={avatar.id} avatar={avatar} />
+                ))}
+              </>
+            )}
+            
+            <OrbitControls 
+              enablePan={true}
+              enableZoom={true}
+              enableRotate={true}
+              maxPolarAngle={Math.PI}
+              minDistance={1}
+              maxDistance={200}
+            />
+          </Suspense>
+        </Canvas>
+      </CanvasErrorBoundary>
+      
       <div className="ui-overlay">
+        <div className="wallet-section">
+          <WalletConnect 
+            onConnect={handleWalletConnect}
+            onDisconnect={handleWalletDisconnect}
+          />
+          {walletConnected && currentView === 'universe' && (
+            <button 
+              onClick={() => setShowAvatarCreator(!showAvatarCreator)}
+              className="avatar-btn"
+              style={{
+                background: 'linear-gradient(45deg, #A67C52, #C17E61)',
+                color: '#B8A99A',
+                border: 'none',
+                padding: '10px 20px',
+                borderRadius: '5px',
+                cursor: 'pointer',
+                fontSize: '14px',
+                marginTop: '10px',
+                width: '100%'
+              }}
+            >
+              {showAvatarCreator ? 'Cancel Avatar Creation' : '🎭 Create Dance Avatar'}
+            </button>
+          )}
+        </div>
+        
+        {currentView === 'universe' && (
+          <AvatarCreator 
+            onAvatarCreate={handleAvatarCreate}
+            isVisible={showAvatarCreator}
+          />
+        )}
+        
         <div className="instructions">
-          <h2>Controls</h2>
+          <h2>Dance Universe</h2>
+          <p>• Click on galaxies to explore</p>
           <p>• Mouse: Rotate view</p>
           <p>• Scroll: Zoom in/out</p>
           <p>• Right click + drag: Pan</p>
+          {currentView === 'universe' && (
+            <button 
+              onClick={handleBackToUniverse}
+              className="reset-btn"
+              style={{
+                background: 'rgba(255, 255, 255, 0.3)',
+                color: '#B8A99A',
+                border: 'none',
+                padding: '8px 16px',
+                borderRadius: '5px',
+                cursor: 'pointer',
+                fontSize: '12px',
+                marginTop: '10px'
+              }}
+            >
+              Reset to Universe View
+            </button>
+          )}
+          {walletConnected && (
+            <>
+              <h3>Web3 Features</h3>
+              <p>• Connected: {walletAccount}</p>
+              <p>• Avatars: {avatars.length}</p>
+            </>
+          )}
         </div>
       </div>
     </div>

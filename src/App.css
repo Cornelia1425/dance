@@ -17,24 +17,138 @@
   top: 20px;
   right: 20px;
   background: rgba(0, 0, 0, 0.7);
-  color: white;
+  color: #B8A99A;
   padding: 20px;
   border-radius: 10px;
   font-family: 'Arial', sans-serif;
   z-index: 1000;
   backdrop-filter: blur(10px);
+  max-width: 300px;
+}
+
+.wallet-section {
+  margin-bottom: 20px;
+}
+
+.wallet-connect {
+  margin-bottom: 15px;
+}
+
+.connect-btn, .disconnect-btn, .avatar-btn {
+  background: linear-gradient(45deg, #8B7355, #A67C52);
+  color: #B8A99A;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 14px;
+  margin: 5px;
+  transition: all 0.3s ease;
+}
+
+.connect-btn:hover, .disconnect-btn:hover, .avatar-btn:hover {
+  background: linear-gradient(45deg, #A67C52, #C17E61);
+  transform: translateY(-2px);
+}
+
+.wallet-info {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.account {
+  background: rgba(139, 115, 85, 0.2);
+  padding: 5px 10px;
+  border-radius: 15px;
+  font-family: monospace;
+  font-size: 12px;
+  color: #8B7355;
+}
+
+.error {
+  color: #C17E61;
+  font-size: 12px;
+  margin-top: 5px;
+}
+
+.avatar-creator {
+  background: rgba(0, 0, 0, 0.8);
+  padding: 15px;
+  border-radius: 8px;
+  margin-bottom: 15px;
+}
+
+.avatar-creator h3 {
+  margin: 0 0 15px 0;
+  color: #8B7355;
+  font-size: 16px;
+}
+
+.form-group {
+  margin-bottom: 10px;
+}
+
+.form-group label {
+  display: block;
+  margin-bottom: 5px;
+  font-size: 12px;
+  color: #B8A99A;
+}
+
+.form-group input, .form-group select {
+  width: 100%;
+  padding: 8px;
+  border: 1px solid #333;
+  border-radius: 4px;
+  background: rgba(255, 255, 255, 0.1);
+  color: #B8A99A;
+  font-size: 12px;
+}
+
+.form-group input[type="color"] {
+  width: 50px;
+  height: 30px;
+  padding: 0;
+}
+
+.form-group input[type="range"] {
+  width: 60%;
+  margin-right: 10px;
+}
+
+.create-avatar-btn {
+  background: linear-gradient(45deg, #A67C52, #C17E61);
+  color: #B8A99A;
+  border: none;
+  padding: 10px 20px;
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 14px;
+  width: 100%;
+  margin-top: 10px;
+}
+
+.create-avatar-btn:hover {
+  background: linear-gradient(45deg, #C17E61, #D4A574);
 }
 
 .instructions h2 {
   margin: 0 0 10px 0;
   font-size: 18px;
-  color: #4a90e2;
+  color: #8B7355;
+}
+
+.instructions h3 {
+  margin: 15px 0 10px 0;
+  font-size: 16px;
+  color: #A67C52;
 }
 
 .instructions p {
   margin: 5px 0;
   font-size: 14px;
-  color: #cccccc;
+  color: #B8A99A;
 }
 
 /* Remove old portfolio styles */
