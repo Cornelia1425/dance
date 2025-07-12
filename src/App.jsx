@@ -246,6 +246,45 @@ function App() {
           )}
         </div>
       </div>
+      
+      {/* Twitter/X Button - Bottom Right */}
+      <div style={{
+        position: 'absolute',
+        bottom: '20px',
+        right: '20px',
+        zIndex: 1000
+      }}>
+        <a 
+          href="https://x.com/MonsterSea7" 
+          target="_blank" 
+          rel="noopener noreferrer"
+          style={{
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+            width: '50px',
+            height: '50px',
+            background: 'rgba(255, 255, 255, 0.3)',
+            borderRadius: '50%',
+            textDecoration: 'none',
+            color: '#B8A99A',
+            fontSize: '20px',
+            transition: 'all 0.3s ease',
+            backdropFilter: 'blur(10px)',
+            border: '1px solid rgba(255, 255, 255, 0.2)'
+          }}
+          onMouseEnter={(e) => {
+            e.target.style.background = 'rgba(255, 255, 255, 0.5)';
+            e.target.style.transform = 'scale(1.1)';
+          }}
+          onMouseLeave={(e) => {
+            e.target.style.background = 'rgba(255, 255, 255, 0.3)';
+            e.target.style.transform = 'scale(1)';
+          }}
+        >
+          𝕏
+        </a>
+      </div>
     </div>
   )
 }
