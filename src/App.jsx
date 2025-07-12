@@ -6,6 +6,7 @@ import './App.css'
 function VideoScreen({ position, videoId, title }) {
   return (
     <group position={position}>
+      {/* Front side */}
       <mesh>
         <boxGeometry args={[6, 4, 0.1]} />
         <meshStandardMaterial color="#000" />
@@ -17,18 +18,47 @@ function VideoScreen({ position, videoId, title }) {
         distanceFactor={1.5}
         zIndexRange={[0, 10]}
       >
-        <div style={{ width: '600px', height: '400px', background: '#000', padding: '0' }}>
+        <div style={{ width: '600px', height: '400px', background: '#000', padding: '0', margin: '0' }}>
           <iframe
-            width="600"
-            height="400"
+            width="100%"
+            height="100%"
             src={`https://www.youtube.com/embed/${videoId}`}
             title={title}
             frameBorder="0"
             allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
             allowFullScreen
+            style={{ border: 'none', margin: '0', padding: '0' }}
           />
         </div>
       </Html>
+      
+      {/* Back side */}
+      <mesh rotation={[0, Math.PI, 0]}>
+        <boxGeometry args={[6, 4, 0.1]} />
+        <meshStandardMaterial color="#000" />
+      </mesh>
+      <Html
+        position={[0, 0, -0.06]}
+        rotation={[0, Math.PI, 0]}
+        transform
+        occlude
+        distanceFactor={1.5}
+        zIndexRange={[0, 10]}
+      >
+        <div style={{ width: '600px', height: '400px', background: '#000', padding: '0', margin: '0' }}>
+          <iframe
+            width="100%"
+            height="100%"
+            src={`https://www.youtube.com/embed/${videoId}`}
+            title={title}
+            frameBorder="0"
+            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+            allowFullScreen
+            style={{ border: 'none', margin: '0', padding: '0' }}
+          />
+        </div>
+      </Html>
+      
       <Text
         position={[0, -2.5, 0.1]}
         fontSize={0.3}
@@ -80,7 +110,7 @@ function ExhibitionCenter() {
         <meshStandardMaterial color="#0f3460" />
       </mesh>
       
-      {/* Single floating video screen */}
+      {/* Double-sided video screen in center */}
       <VideoScreen 
         position={[0, 0, 0]} 
         videoId="rfBCmE7K4lc" 
