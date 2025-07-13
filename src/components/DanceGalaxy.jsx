@@ -208,7 +208,7 @@ const DanceGalaxy = ({ galaxy, onBack }) => {
                   backdropFilter: 'blur(10px)',
                   border: '1px solid rgba(255, 255, 255, 0.2)'
                 }}>
-                  💡 Tip: If you see wallet errors, try disabling MetaMask temporarily
+                  💡 Demo NFT - No wallet required! Click to create a dance NFT
                 </div>
               </div>
             )}
