@@ -1,6 +1,7 @@
 import React, { useRef } from 'react';
 import { useFrame } from '@react-three/fiber';
 import { Text, Html } from '@react-three/drei';
+import SolanaMinter from './SolanaMinter';
 
 const DanceGalaxy = ({ galaxy, onBack }) => {
   const groupRef = useRef();
@@ -169,7 +170,7 @@ const DanceGalaxy = ({ galaxy, onBack }) => {
           distanceFactor={1.5}
           zIndexRange={[0, 10]}
         >
-          <div style={{ width: '400px', height: '250px', background: '#000', padding: '0', margin: '0' }}>
+          <div style={{ width: '400px', height: '250px', background: '#000', padding: '0', margin: '0', position: 'relative' }}>
             <iframe
               width="100%"
               height="100%"
@@ -180,6 +181,15 @@ const DanceGalaxy = ({ galaxy, onBack }) => {
               allowFullScreen
               style={{ border: 'none', margin: '0', padding: '0' }}
             />
+            
+            {/* Solana Mint button - only for Exchange galaxy */}
+            {galaxy.name === 'Exchange' && (
+              <SolanaMinter 
+                videoId={content.videoId}
+                title={content.title}
+                description={content.description}
+              />
+            )}
           </div>
         </Html>
       </group>

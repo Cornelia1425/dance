@@ -3,7 +3,7 @@ import React, { useState } from 'react';
 const AvatarCreator = ({ onAvatarCreate, isVisible }) => {
   const [avatarConfig, setAvatarConfig] = useState({
     name: '',
-    color: '#4a90e2',
+    color: '#6B8E23',
     size: 1,
     danceStyle: 'contemporary'
   });

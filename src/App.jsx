@@ -185,7 +185,7 @@ function App() {
             onConnect={handleWalletConnect}
             onDisconnect={handleWalletDisconnect}
           />
-          {walletConnected && currentView === 'universe' && (
+          {walletConnected && currentView === 'universe' && avatars.length === 0 && (
             <button 
               onClick={() => setShowAvatarCreator(!showAvatarCreator)}
               className="avatar-btn"
