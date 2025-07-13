@@ -184,11 +184,33 @@ const DanceGalaxy = ({ galaxy, onBack }) => {
             
             {/* Solana Mint button - only for Exchange galaxy */}
             {galaxy.name === 'Exchange' && (
-              <SolanaMinter 
-                videoId={content.videoId}
-                title={content.title}
-                description={content.description}
-              />
+              <div style={{
+                position: 'absolute',
+                top: '10px',
+                right: '10px',
+                zIndex: 1000,
+                display: 'flex',
+                flexDirection: 'column',
+                gap: '8px'
+              }}>
+                <SolanaMinter 
+                  videoId={content.videoId}
+                  title={content.title}
+                  description={content.description}
+                />
+                <div style={{
+                  background: 'rgba(0, 0, 0, 0.7)',
+                  color: '#B8A99A',
+                  padding: '6px 10px',
+                  borderRadius: '6px',
+                  fontSize: '10px',
+                  maxWidth: '200px',
+                  backdropFilter: 'blur(10px)',
+                  border: '1px solid rgba(255, 255, 255, 0.2)'
+                }}>
+                  💡 Tip: If you see wallet errors, try disabling MetaMask temporarily
+                </div>
+              </div>
             )}
           </div>
         </Html>
