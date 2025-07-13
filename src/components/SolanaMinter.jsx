@@ -4,30 +4,19 @@ const SolanaMinter = ({ videoId, title, description }) => {
   const [isMinting, setIsMinting] = useState(false);
   const [mintStatus, setMintStatus] = useState('');
 
-
-
   const mintNFT = async () => {
     setIsMinting(true);
     setMintStatus('Creating Dance NFT...');
 
     try {
-      // Create a demo NFT without requiring wallet connection
-      // This avoids all wallet conflicts
-      const demoTransaction = {
-        signature: 'demo_' + Date.now() + '_' + Math.random().toString(36).substr(2, 9),
-        network: 'Solana Devnet',
-        video: title,
-        timestamp: new Date().toISOString(),
-        description: description,
-        creator: 'Dance Universe',
-        royalties: '5%'
-      };
-
+      // Simulate minting process
+      await new Promise(resolve => setTimeout(resolve, 2000));
+      
       setMintStatus('🎉 NFT Created Successfully!');
       
       // Show demo transaction details
       setTimeout(() => {
-        alert(`🎭 Dance NFT Created!\n\nTransaction: ${demoTransaction.signature}\nNetwork: ${demoTransaction.network}\nVideo: ${demoTransaction.video}\nCreator: ${demoTransaction.creator}\nRoyalties: ${demoTransaction.royalties}\nTimestamp: ${demoTransaction.timestamp}\n\nThis is a demo NFT. In production, this would be minted on the Solana blockchain with real wallet integration!`);
+        alert(`🎭 Dance NFT Demo Created!\n\nVideo: ${title}\nDescription: ${description}\nNetwork: Solana Devnet\nCreator: Demo User\nRoyalties: 5%\nTimestamp: ${new Date().toISOString()}\n\nThis is a demo. In production, this would mint an actual NFT on the Solana blockchain!`);
         setIsMinting(false);
         setMintStatus('');
       }, 2000);
@@ -48,13 +37,31 @@ const SolanaMinter = ({ videoId, title, description }) => {
       position: 'absolute',
       top: '10px',
       right: '10px',
-      zIndex: 1000
+      zIndex: 1000,
+      display: 'flex',
+      flexDirection: 'column',
+      gap: '8px'
     }}>
+      {/* Demo Wallet Status */}
+      <div style={{
+        background: 'rgba(0, 0, 0, 0.7)',
+        borderRadius: '20px',
+        padding: '8px 16px',
+        backdropFilter: 'blur(10px)',
+        border: '1px solid rgba(255, 255, 255, 0.2)',
+        color: '#B8A99A',
+        fontSize: '12px',
+        textAlign: 'center'
+      }}>
+        🔗 Demo Wallet Connected
+      </div>
+
+      {/* Mint Button */}
       <button
         onClick={mintNFT}
         disabled={isMinting}
         style={{
-          background: isMinting 
+          background: isMinting
             ? 'linear-gradient(45deg, #666, #888)' 
             : 'linear-gradient(45deg, #9945FF, #14F195)',
           color: '#B8A99A',
@@ -86,7 +93,7 @@ const SolanaMinter = ({ videoId, title, description }) => {
       {mintStatus && (
         <div style={{
           position: 'absolute',
-          top: '50px',
+          top: '100px',
           right: '0',
           background: 'rgba(0, 0, 0, 0.8)',
           color: '#B8A99A',

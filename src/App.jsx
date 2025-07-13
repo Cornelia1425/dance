@@ -1,14 +1,15 @@
 import { Canvas } from '@react-three/fiber'
 import { OrbitControls, Text } from '@react-three/drei'
 import { Suspense, useState, Component } from 'react'
-import WalletConnect from './components/WalletConnect'
 import AvatarCreator from './components/AvatarCreator'
 import Avatar from './components/Avatar'
 import StarField from './components/StarField'
 import DanceGalaxy from './components/DanceGalaxy'
+import WalletTest from './components/WalletTest'
 import './App.css'
 
 // Error Boundary for Canvas
+
 class CanvasErrorBoundary extends Component {
   constructor(props) {
     super(props);
@@ -62,25 +63,13 @@ class CanvasErrorBoundary extends Component {
 }
 
 function App() {
-  const [walletConnected, setWalletConnected] = useState(false);
-  const [walletAccount, setWalletAccount] = useState(null);
+  console.log('App component rendering...');
+
   const [showAvatarCreator, setShowAvatarCreator] = useState(false);
   const [avatars, setAvatars] = useState([]);
   const [currentView, setCurrentView] = useState('universe'); // 'universe' or 'galaxy'
   const [selectedGalaxy, setSelectedGalaxy] = useState(null);
   const [cameraPosition, setCameraPosition] = useState([0, 0, 20]);
-
-  const handleWalletConnect = (account, provider) => {
-    setWalletConnected(true);
-    setWalletAccount(account);
-    // Don't automatically show avatar creator, let user choose
-  };
-
-  const handleWalletDisconnect = () => {
-    setWalletConnected(false);
-    setWalletAccount(null);
-    setShowAvatarCreator(false);
-  };
 
   const handleAvatarCreate = (avatar) => {
     // Generate random position near the current camera position
@@ -180,12 +169,9 @@ function App() {
       </CanvasErrorBoundary>
       
       <div className="ui-overlay">
+        <WalletTest />
         <div className="wallet-section">
-          <WalletConnect 
-            onConnect={handleWalletConnect}
-            onDisconnect={handleWalletDisconnect}
-          />
-          {walletConnected && currentView === 'universe' && avatars.length === 0 && (
+          {currentView === 'universe' && avatars.length === 0 && (
             <button 
               onClick={() => setShowAvatarCreator(!showAvatarCreator)}
               className="avatar-btn"
@@ -237,13 +223,10 @@ function App() {
               Reset to Universe View
             </button>
           )}
-          {walletConnected && (
-            <>
-              <h3>Web3 Features</h3>
-              <p>• Connected: {walletAccount}</p>
-              <p>• Avatars: {avatars.length}</p>
-            </>
-          )}
+          <div style={{ marginTop: '10px' }}>
+            <h3>Features</h3>
+            <p>• Avatars: {avatars.length}</p>
+          </div>
         </div>
       </div>
       
@@ -286,7 +269,7 @@ function App() {
         </a>
       </div>
     </div>
-  )
+  );
 }
 
 export default App
